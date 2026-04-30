@@ -45,7 +45,9 @@ end)
 
 RegisterNUICallback('Close', function(data, cb)
     cb('OK')
-    CloseMenu()
+    SetNuiFocus(false, false)
+    _menuOpen = false
+    SendNUIMessage({ type = "APP_HIDE" })
 end)
 
 RegisterNUICallback('GetPlayerList', function(data, cb)

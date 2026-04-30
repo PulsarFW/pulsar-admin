@@ -74,7 +74,8 @@ export default () => {
 	const permissionLevel = useSelector(state => state.app.permissionLevel);
 
 	const onClose = () => {
-		Nui.send('Close');
+		dispatch({ type: 'APP_HIDE' });
+		Nui.send('Close').catch(() => {});
 	};
 
 	const onDetach = () => {
