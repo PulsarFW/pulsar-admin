@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Grid, TextField, InputAdornment, IconButton, Pagination, List, Button } from "@material-ui/core";
+import { Grid, TextField, InputAdornment, IconButton, Pagination, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -11,34 +11,52 @@ import Doorlock from "./Doorlock";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    padding: "20px 10px 20px 20px",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    padding: '20px 10px 20px 20px',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    boxSizing: 'border-box',
   },
   header: {
-    flex: "0 0 auto",
-    marginBottom: 10,
+    flex: '0 0 auto',
+    marginBottom: 14,
   },
-  search: {
-    marginBottom: 10,
+  pageTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    color: theme.palette.text.info,
+    marginBottom: 14,
+    '&::before': {
+      content: '""',
+      display: 'inline-block',
+      width: 3,
+      height: 13,
+      background: theme.palette.primary.main,
+      borderRadius: 2,
+    },
   },
   results: {
-    flex: "1 1 auto",
+    flex: '1 1 auto',
     minHeight: 0,
+    display: 'flex',
+    flexDirection: 'column',
   },
   items: {
-    maxHeight: "100%",
-    height: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
+    flex: '1 1 auto',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    paddingRight: 10,
   },
-  loader: {
-    marginTop: "10%",
-  },
-  addButton: {
-    width: "100%",
-    marginBottom: 10,
+  actionBtn: {
+    height: 40,
+    fontSize: 12,
+    fontWeight: 600,
+    letterSpacing: '0.04em',
   },
 }));
 
@@ -120,16 +138,28 @@ export default (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.header}>
+        <div className={classes.pageTitle}>Door Locks</div>
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <Button className={classes.addButton} variant="contained" color="primary" onClick={onAddNew}>
-              <FontAwesomeIcon icon={["fas", "plus"]} style={{ marginRight: 8 }} />
-              Create New Doorlock
+            <Button
+              fullWidth
+              className={classes.actionBtn}
+              variant="contained"
+              color="primary"
+              onClick={onAddNew}
+            >
+              <FontAwesomeIcon icon={['fas', 'plus']} style={{ marginRight: 8 }} />
+              Create New
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button className={classes.addButton} variant="contained" onClick={onRefresh}>
-              <FontAwesomeIcon icon={["fas", "refresh"]} style={{ marginRight: 8 }} />
+            <Button
+              fullWidth
+              className={classes.actionBtn}
+              variant="outlined"
+              onClick={onRefresh}
+            >
+              <FontAwesomeIcon icon={['fas', 'rotate-right']} style={{ marginRight: 8 }} />
               Refresh
             </Button>
           </Grid>
@@ -144,9 +174,9 @@ export default (props) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    {searched !== "" && (
+                    {searched !== '' && (
                       <IconButton type="button" onClick={onClear}>
-                        <FontAwesomeIcon icon={["fas", "xmark"]} />
+                        <FontAwesomeIcon icon={['fas', 'xmark']} />
                       </IconButton>
                     )}
                   </InputAdornment>
@@ -161,15 +191,24 @@ export default (props) => {
           <Loader text="Loading Doorlocks" />
         ) : (
           <>
-            <List className={classes.items}>
+            <div className={classes.items}>
               {doorlocks
                 .slice((page - 1) * PER_PAGE, page * PER_PAGE)
                 .sort((a, b) => a.id - b.id)
-                .map((doorlock) => {
-                  return <Doorlock key={doorlock.id} doorlock={doorlock} onUpdate={fetch} />;
-                })}
-            </List>
-            {pages > 1 && <Pagination variant="outlined" shape="rounded" color="primary" page={page} count={pages} onChange={onPagi} />}
+                .map((doorlock) => (
+                  <Doorlock key={doorlock.id} doorlock={doorlock} onUpdate={fetch} />
+                ))}
+            </div>
+            {pages > 1 && (
+              <Pagination
+                variant="outlined"
+                shape="rounded"
+                color="primary"
+                page={page}
+                count={pages}
+                onChange={onPagi}
+              />
+            )}
           </>
         )}
       </div>

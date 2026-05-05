@@ -19,7 +19,7 @@ const staff = [
   {
     name: "players",
     icon: ["fas", "user-large"],
-    label: "Players",
+    label: "Online Players",
     path: "/players",
     exact: true,
   },
@@ -44,13 +44,14 @@ const staff = [
     path: "/doorlocks",
     exact: true,
   },
-  // {
-  // 	name: 'current-vehicle',
-  // 	icon: ['fas', 'car-side'],
-  // 	label: 'Current Vehicle',
-  // 	path: '/current-vehicle',
-  // 	exact:  true,
-  // }
+  { sectionLabel: "Reference" },
+  {
+    name: "commands",
+    icon: ["fas", "terminal"],
+    label: "Commands",
+    path: "/commands",
+    exact: true,
+  },
 ];
 
 const admin = [
@@ -85,7 +86,7 @@ const admin = [
   {
     name: "vehicles",
     icon: ["fas", "car"],
-    label: "Active Owned Vehicles",
+    label: "Active Vehicles",
     path: "/vehicles",
     exact: true,
   },
@@ -101,6 +102,22 @@ const admin = [
     icon: ["fas", "door-closed"],
     label: "Doorlocks",
     path: "/doorlocks",
+    exact: true,
+  },
+  { sectionLabel: "Admin Tools" },
+  {
+    name: "items",
+    icon: ["fas", "box-open"],
+    label: "Item Database",
+    path: "/items",
+    exact: true,
+  },
+  { sectionLabel: "Reference" },
+  {
+    name: "commands",
+    icon: ["fas", "terminal"],
+    label: "Commands",
+    path: "/commands",
     exact: true,
   },
 ];

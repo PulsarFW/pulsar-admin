@@ -1,60 +1,125 @@
-import React from "react";
-import { ListItem, ListItemText, Grid, Chip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { Chip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    padding: 10,
-    background: theme.palette.secondary.main,
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: '10px 14px',
+    background: theme.palette.secondary.light,
     border: `1px solid ${theme.palette.border.divider}`,
-    marginBottom: 10,
     borderRadius: 4,
-    "&:hover": {
-      background: theme.palette.secondary.light,
-      cursor: "pointer",
-      transition: "background ease-in 0.15s",
+    marginBottom: 6,
+    cursor: 'pointer',
+    transition: 'background ease-in 0.15s, border-color ease-in 0.15s',
+    '&:hover': {
+      background: 'rgba(124, 58, 237, 0.07)',
+      borderColor: `${theme.palette.primary.main}50`,
     },
   },
-  state: {
-    padding: 4,
+  idBadge: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 42,
+    height: 28,
     borderRadius: 4,
-    color: theme.palette.text.main,
+    padding: '0 8px',
+    background: 'rgba(124, 58, 237, 0.12)',
+    border: '1px solid rgba(124, 58, 237, 0.25)',
+    fontSize: 11,
+    fontWeight: 700,
+    color: theme.palette.primary.light,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  info: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+    minWidth: 0,
+  },
+  col: {
+    flex: 1,
+    minWidth: 0,
+  },
+  colLabel: {
+    display: 'block',
+    fontSize: 10,
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: theme.palette.text.info,
+    marginBottom: 2,
+  },
+  colValue: {
+    display: 'block',
+    fontSize: 13,
     fontWeight: 500,
+    color: theme.palette.text.main,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
-  locked: {
-    background: theme.palette.error.main,
+  statusChip: {
+    height: 20,
+    fontSize: 10,
+    fontWeight: 700,
+    letterSpacing: '0.06em',
+    borderRadius: 3,
+    flexShrink: 0,
   },
-  unlocked: {
-    background: theme.palette.success.main,
-  },
-  coords: {
+  arrow: {
+    color: theme.palette.text.info,
     fontSize: 12,
-    color: theme.palette.text.alt,
+    flexShrink: 0,
   },
 }));
 
-export default ({ doorlock, onUpdate }) => {
+export default ({ doorlock }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const onClick = () => {
-    history.push(`/doorlock/${doorlock.id}`);
-  };
+  const isLocked = doorlock.state === 1;
+  const coordStr = doorlock.coords
+    ? `${doorlock.coords.x.toFixed(1)}, ${doorlock.coords.y.toFixed(1)}, ${doorlock.coords.z.toFixed(1)}`
+    : '—';
+  const groupStr = doorlock.groups && Object.keys(doorlock.groups).length > 0
+    ? Object.keys(doorlock.groups).join(', ')
+    : 'No groups';
 
   return (
-    <ListItem className={classes.wrapper} onClick={onClick}>
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-          <ListItemText primary={`#${doorlock.id} - ${doorlock.name}`} secondary={<span className={classes.coords}>{doorlock.coords ? `X: ${doorlock.coords.x.toFixed(2)}, Y: ${doorlock.coords.y.toFixed(2)}, Z: ${doorlock.coords.z.toFixed(2)}` : "No coords"}</span>} />
-        </Grid>
-        <Grid item xs={3}>
-          <ListItemText primary="Groups" secondary={doorlock.groups && Object.keys(doorlock.groups).length > 0 ? Object.keys(doorlock.groups).join(", ") : "No groups"} />
-        </Grid>
-        <Grid item xs={3}>
-          <Chip className={`${classes.state} ${doorlock.state === 1 ? classes.locked : classes.unlocked}`} label={doorlock.state === 1 ? "Locked" : "Unlocked"} />
-        </Grid>
-      </Grid>
-    </ListItem>
+    <div className={classes.row} onClick={() => history.push(`/doorlock/${doorlock.id}`)}>
+      <div className={classes.idBadge}>#{doorlock.id}</div>
+      <div className={classes.info}>
+        <div className={classes.col} style={{ flex: 2 }}>
+          <span className={classes.colLabel}>Name</span>
+          <span className={classes.colValue}>{doorlock.name}</span>
+        </div>
+        <div className={classes.col} style={{ flex: 2 }}>
+          <span className={classes.colLabel}>Coordinates</span>
+          <span className={classes.colValue}>{coordStr}</span>
+        </div>
+        <div className={classes.col}>
+          <span className={classes.colLabel}>Groups</span>
+          <span className={classes.colValue}>{groupStr}</span>
+        </div>
+      </div>
+      <Chip
+        label={isLocked ? 'Locked' : 'Unlocked'}
+        size="small"
+        className={classes.statusChip}
+        style={isLocked
+          ? { background: 'rgba(239, 68, 68, 0.15)', color: '#F87171', border: '1px solid rgba(239, 68, 68, 0.3)' }
+          : { background: 'rgba(5, 150, 105, 0.15)', color: '#10B981', border: '1px solid rgba(5, 150, 105, 0.3)' }
+        }
+      />
+      <FontAwesomeIcon icon={['fas', 'chevron-right']} className={classes.arrow} />
+    </div>
   );
 };

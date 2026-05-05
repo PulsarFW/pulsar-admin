@@ -10,20 +10,25 @@ import MenuItemSub from './MenuItemSub';
 const useStyles = makeStyles((theme) => ({
 	mainNav: {
 		borderRight: `1px solid ${theme.palette.border.divider}`,
-		background: theme.palette.secondary.main,
+		background: theme.palette.secondary.dark,
 		width: '100%',
 		display: 'inline-block',
 		verticalAlign: 'top',
-		height: '97.5%',
+		height: '100%',
 		overflow: 'auto',
+		padding: '8px 0',
 		'&::-webkit-scrollbar': {
 			width: 0,
 		},
 	},
-	menu: {
-		background: theme.palette.secondary.dark,
-		borderRadius: 0,
-		zIndex: 100,
+	navSection: {
+		padding: '12px 12px 4px 14px',
+		fontSize: 10,
+		fontWeight: 700,
+		letterSpacing: '0.12em',
+		textTransform: 'uppercase',
+		color: theme.palette.text.info,
+		userSelect: 'none',
 	},
 }));
 
@@ -35,13 +40,22 @@ export default (props) => {
 	const isMobile = !useMediaQuery(theme.breakpoints.up('lg'));
 
 	return (
-		<List className={!isMobile ? classes.mainNav : ''}>
+		<List className={!isMobile ? classes.mainNav : ''} disablePadding>
 			{props.links.map((link, i) => {
 				if (
 					link.restrict &&
 					(!Boolean(user) || (permissionLevel < link.restrict.permission))
 				)
 					return null;
+
+				if (link.sectionLabel) {
+					return (
+						<div key={`section-${i}`} className={classes.navSection}>
+							{link.sectionLabel}
+						</div>
+					);
+				}
+
 				if (Boolean(link.items) && link.items.length > 0) {
 					return (
 						<div key={`${link.path}-${i}`}>

@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import {
-    Grid,
     TextField,
     InputAdornment,
     IconButton,
     Pagination,
-    List,
-    MenuItem,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,27 +17,49 @@ const useStyles = makeStyles((theme) => ({
     wrapper: {
         padding: '20px 10px 20px 20px',
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box',
+    },
+    pageTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        color: theme.palette.text.info,
+        marginBottom: 14,
+        '&::before': {
+            content: '""',
+            display: 'inline-block',
+            width: 3,
+            height: 13,
+            background: theme.palette.primary.main,
+            borderRadius: 2,
+        },
     },
     search: {
-        height: '10%',
+        flex: '0 0 auto',
+        marginBottom: 12,
     },
     results: {
-        height: '90%',
+        flex: '1 1 auto',
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
     },
     items: {
-        maxHeight: '95%',
-        height: '95%',
+        flex: '1 1 auto',
         overflowY: 'auto',
         overflowX: 'hidden',
+        paddingRight: 10,
     },
-    loader: {
-        marginTop: '10%',
-    }
 }));
 
 export default (props) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const PER_PAGE = 32;
 
     const [searched, setSearched] = useState('');
@@ -117,54 +135,40 @@ export default (props) => {
 
     return (
         <div className={classes.wrapper}>
+            <div className={classes.pageTitle}>Active Vehicles</div>
             <div className={classes.search}>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            variant="outlined"
-                            name="search"
-                            value={searched}
-                            onChange={(e) => setSearched(e.target.value)}
-                            label="Search"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        {searched != '' && (
-                                            <IconButton
-                                                type="button"
-                                                onClick={onClear}
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={['fas', 'xmark']}
-                                                />
-                                            </IconButton>
-                                        )}
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Grid>
-                </Grid>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="search"
+                    value={searched}
+                    onChange={(e) => setSearched(e.target.value)}
+                    label="Search by make, model, plate or VIN"
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                {searched != '' && (
+                                    <IconButton type="button" onClick={onClear}>
+                                        <FontAwesomeIcon icon={['fas', 'xmark']} />
+                                    </IconButton>
+                                )}
+                            </InputAdornment>
+                        ),
+                    }}
+                />
             </div>
             <div className={classes.results}>
                 {loading ? (
                     <Loader text="Loading" />
                 ) : (
                     <>
-                        <List className={classes.items}>
+                        <div className={classes.items}>
                             {vehicles
                                 .slice((page - 1) * PER_PAGE, page * PER_PAGE)
-                                .sort((a, b) => b.Source - a.Source)
-                                .map((p) => {
-                                    return (
-                                        <Vehicle
-                                            key={p.Source}
-                                            vehicle={p}
-                                        />
-                                    );
-                                })}
-                        </List>
+                                .map((p) => (
+                                    <Vehicle key={p.Entity} vehicle={p} />
+                                ))}
+                        </div>
                         {pages > 1 && (
                             <Pagination
                                 variant="outlined"

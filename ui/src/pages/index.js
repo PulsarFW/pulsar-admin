@@ -15,6 +15,9 @@ import Characters from "./Characters";
 import Doorlocks from "./Doorlocks";
 import DoorlockView from "./View/Doorlock";
 
+import Items from "./Items";
+import Commands from "./Commands";
+
 export {
   Dashboard,
   Players,
@@ -26,5 +29,7 @@ export {
   Characters,
   Doorlocks,
   DoorlockView,
+  Items,
+  Commands,
   Error,
 };

@@ -8,7 +8,6 @@ import {
   createTheme,
   StyledEngineProvider,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
@@ -22,9 +21,6 @@ import Panel from "../Panel";
 library.add(fab, fas, far);
 
 export default () => {
-  const theme = "dark";
-  const job = useSelector((state) => state.app.govJob);
-
   const muiTheme = createTheme({
     typography: {
       fontFamily: ["Exo"],
@@ -32,85 +28,98 @@ export default () => {
     },
     palette: {
       primary: {
-        main: "#E5A502",
-        light: "#E8A933",
-        dark: "#FA5800",
+        main: "#7C3AED",
+        light: "#A78BFA",
+        dark: "#5B21B6",
         contrastText: "#ffffff",
       },
       secondary: {
-        main: "#141414",
-        light: "#1c1c1c",
-        dark: "#0f0f0f",
+        main: "#0C0C1A",
+        light: "#111124",
+        dark: "#080812",
         contrastText: "#ffffff",
       },
       error: {
-        main: "#6e1616",
-        light: "#a13434",
-        dark: "#430b0b",
+        main: "#DC2626",
+        light: "#EF4444",
+        dark: "#991B1B",
       },
       success: {
-        main: "#52984a",
-        light: "#60eb50",
-        dark: "#244a20",
+        main: "#059669",
+        light: "#10B981",
+        dark: "#065F46",
       },
       warning: {
-        main: "#f09348",
-        light: "#f2b583",
-        dark: "#b05d1a",
+        main: "#D97706",
+        light: "#F59E0B",
+        dark: "#92400E",
       },
       info: {
-        main: "#247ba5",
-        light: "#247ba5",
-        dark: "#175878",
+        main: "#2563EB",
+        light: "#3B82F6",
+        dark: "#1D4ED8",
       },
       text: {
-        main: theme === "dark" ? "#ffffff" : "#2e2e2e",
-        alt: theme === "dark" ? "rgba(255, 255, 255, 0.7)" : "#858585",
-        info: theme === "dark" ? "#919191" : "#919191",
-        light: "#ffffff",
+        main: "#E2E8F0",
+        alt: "#94A3B8",
+        info: "#64748B",
+        light: "#F8FAFC",
         dark: "#000000",
       },
-      alt: {
-        green: "#008442",
-        greenDark: "#064224",
-      },
       border: {
-        main: theme === "dark" ? "#e0e0e008" : "#e0e0e008",
+        main: "#1A1A2E",
         light: "#ffffff",
-        dark: "#26292d",
-        input:
-          theme === "dark"
-            ? "rgba(255, 255, 255, 0.23)"
-            : "rgba(0, 0, 0, 0.23)",
-        divider:
-          theme === "dark"
-            ? "rgba(255, 255, 255, 0.12)"
-            : "rgba(0, 0, 0, 0.12)",
+        dark: "#1A1A2E",
+        input: "rgba(124, 58, 237, 0.35)",
+        divider: "#1A1A2E",
       },
-      mode: theme,
+      mode: "dark",
     },
     components: {
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            fontSize: 16,
-            backgroundColor: "#151515",
-            border: "1px solid rgba(255, 255, 255, 0.23)",
-            boxShadow: `0 0 10px #000`,
+            fontSize: 13,
+            backgroundColor: "#0C0C1A",
+            border: "1px solid #1A1A2E",
+            borderRadius: 4,
           },
         },
       },
       MuiPaper: {
         styleOverrides: {
           root: {
-            background: "#151515",
+            background: "#0C0C1A",
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: 4,
+            textTransform: "none",
+            letterSpacing: "0.02em",
+            fontWeight: 500,
+            boxShadow: "none",
+            "&:hover": { boxShadow: "none" },
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            borderRadius: 4,
+            "& fieldset": { borderColor: "#1A1A2E" },
+            "&:hover fieldset": { borderColor: "rgba(124, 58, 237, 0.5)" },
+            "&.Mui-focused fieldset": { borderColor: "#7C3AED" },
           },
         },
       },
       MuiAutocomplete: {
         styleOverrides: {
           paper: {
-            boxShadow: "0 0 25px #000",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.7)",
+            border: "1px solid #1A1A2E",
           },
         },
       },
@@ -123,6 +132,43 @@ export default () => {
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            borderRadius: 4,
+            fontSize: 11,
+            height: 22,
+            fontWeight: 600,
+            letterSpacing: "0.04em",
+          },
+        },
+      },
+      MuiLinearProgress: {
+        styleOverrides: {
+          root: {
+            borderRadius: 2,
+            height: 5,
+            backgroundColor: "#1A1A2E",
+          },
+          bar: {
+            borderRadius: 2,
+          },
+        },
+      },
+      MuiDivider: {
+        styleOverrides: {
+          root: {
+            borderColor: "#1A1A2E",
+          },
+        },
+      },
+      MuiListItem: {
+        styleOverrides: {
+          root: {
+            borderRadius: 0,
+          },
+        },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           ".Toastify__toast-container--bottom-right": {
@@ -130,25 +176,27 @@ export default () => {
             right: "0.5em !important",
             position: "absolute !important",
           },
-          ".tox-dialog-wrap__backdrop": {
-            height: "90% !important",
-            width: "90% !important",
-            margin: "auto !important",
-            background: "#151515bf !important",
+          ".Toastify__toast": {
+            background: "#0C0C1A !important",
+            border: "1px solid #1A1A2E !important",
+            borderRadius: "4px !important",
+            color: "#E2E8F0 !important",
+            fontSize: "14px !important",
           },
-          ".tox-statusbar__branding": {
-            display: "none !important",
+          ".Toastify__progress-bar": {
+            background: "#7C3AED !important",
           },
           "*": {
             "&::-webkit-scrollbar": {
-              width: 6,
+              width: 5,
             },
             "&::-webkit-scrollbar-thumb": {
-              background: "rgba(0, 0, 0, 0.5)",
+              background: "#1A1A3E",
+              borderRadius: 3,
               transition: "background ease-in 0.15s",
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: "#ffffff17",
+              background: "rgba(124, 58, 237, 0.5)",
             },
             "&::-webkit-scrollbar-track": {
               background: "transparent",
@@ -156,7 +204,7 @@ export default () => {
           },
           html: {
             background:
-              process.env.NODE_ENV != "production" ? "#1e1e1e" : "transparent",
+              process.env.NODE_ENV != "production" ? "#080812" : "transparent",
             "input::-webkit-outer-spin-button, input::-webkit-inner-spin-button":
               {
                 WebkitAppearance: "none",
@@ -164,9 +212,6 @@ export default () => {
               },
           },
           body: {
-            position: "relative",
-            zIndex: -15,
-            backgroundColor: "#0b0a0a",
             position: "absolute",
             top: 0,
             bottom: 0,
@@ -175,40 +220,11 @@ export default () => {
             margin: "auto",
             height: "90%",
             width: "85%",
-            borderRadius: 10,
-            overflowY: "auto",
-            overflowX: "hidden",
+            borderRadius: 6,
+            overflow: "hidden",
             paddingRight: "0px !important",
-
-            ".item-enter": {
-              opacity: 0,
-            },
-            ".item-enter-active": {
-              opacity: 1,
-              transition: "opacity 500ms ease-in",
-            },
-            ".item-exit": {
-              opacity: 1,
-            },
-            ".item-exit-active": {
-              opacity: 0,
-              transition: "opacity 500ms ease-in",
-            },
-            ".fade-enter": {
-              opacity: 0,
-            },
-            ".fade-exit": {
-              opacity: 1,
-            },
-            ".fade-enter-active": {
-              opacity: 1,
-            },
-            ".fade-exit-active": {
-              opacity: 0,
-            },
-            ".fade-enter-active, .fade-exit-active": {
-              transition: "opacity 500ms",
-            },
+            backgroundColor: "#080812",
+            zIndex: -15,
           },
           a: {
             textDecoration: "none",
@@ -218,25 +234,9 @@ export default () => {
             position: "relative",
             zIndex: -10,
           },
-          "@keyframes bouncing": {
-            "0%": {
-              bottom: 0,
-              opacity: 0.25,
-            },
-            "100%": {
-              bottom: 50,
-              opacity: 1.0,
-            },
-          },
-          "@keyframes ripple": {
-            "0%": {
-              transform: "scale(.8)",
-              opacity: 1,
-            },
-            "100%": {
-              transform: "scale(2.4)",
-              opacity: 0,
-            },
+          "@keyframes fadeIn": {
+            "0%": { opacity: 0 },
+            "100%": { opacity: 1 },
           },
         },
       },
