@@ -29,7 +29,10 @@ jobs:
         working-directory: ui
 
       - name: Bundle files
-        run: zip -r pulsar-admin.zip . -x '*/.github/*' -x '*/node_modules/*'
+        run: |
+          mkdir -p staging/pulsar-admin
+          rsync -a --exclude='.github' --exclude='node_modules' --exclude='staging' . staging/pulsar-admin/
+          cd staging && zip -r ../pulsar-admin.zip pulsar-admin/
 
       - name: Create release
         uses: softprops/action-gh-release@v2
