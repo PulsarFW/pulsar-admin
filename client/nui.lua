@@ -244,3 +244,33 @@ function CopyClipboard(txt)
         }
     })
 end
+
+RegisterNUICallback('GetItemList', function(data, cb)
+    exports["pulsar-core"]:ServerCallback('Admin:GetItemList', data, cb)
+end)
+
+RegisterNUICallback('GiveItem', function(data, cb)
+    exports["pulsar-core"]:ServerCallback('Admin:GiveItem', data, cb)
+end)
+
+RegisterNUICallback('ExecuteCommand', function(data, cb)
+    if data and data.command then
+        local args = data.args and table.concat(data.args, ' ') or ''
+        local fullCmd = args ~= '' and (data.command .. ' ' .. args) or data.command
+        ExecuteCommand(fullCmd)
+
+        if data.command == 'noclip' or data.command == 'noclip:dev' or data.command == 'staffcam' then
+            exports["pulsar-core"]:ServerCallback('Admin:NoClip', { active = true }, function() end)
+        end
+
+        if data.closeMenu then
+            SetTimeout(400, function()
+                CloseMenu()
+            end)
+        end
+
+        cb({ success = true })
+    else
+        cb({ success = false })
+    end
+end)
