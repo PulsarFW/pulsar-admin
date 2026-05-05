@@ -19,6 +19,8 @@ import {
 	Characters,
 	Doorlocks,
 	DoorlockView,
+	Items,
+	Commands,
 } from '../../pages';
 
 import Titlebar from '../../components/Titlebar';
@@ -26,28 +28,29 @@ import Titlebar from '../../components/Titlebar';
 const useStyles = makeStyles((theme) => ({
 	container: {
 		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
 	},
-	wrapper: {
+	titlebarRow: {
+		flexShrink: 0,
+	},
+	body: {
+		flex: 1,
+		display: 'flex',
+		overflow: 'hidden',
+	},
+	sidebar: {
+		width: '25%',
+		flexShrink: 0,
 		height: '100%',
+		overflow: 'hidden',
 	},
 	content: {
-		height: '97%',
+		flex: 1,
+		height: '100%',
 		overflowY: 'auto',
 		overflowX: 'hidden',
 	},
-	maxHeight: {
-		height: 'calc(100% - 86px)',
-	},
-	noCallsign: {
-		position: 'absolute',
-		height: 'fit-content',
-		width: 'fit-content',
-		top: 0,
-		bottom: 0,
-		left: 0,
-		right: 0,
-		margin: 'auto',
-	}
 }));
 
 export default () => {
@@ -56,31 +59,31 @@ export default () => {
 
 	return (
 		<div className={classes.container}>
-			<Grid container className={classes.maxHeight}>
-				<Grid item xs={12}>
-					<Titlebar />
-				</Grid>
-				<Grid item xs={3} className={classes.wrapper}>
+			<div className={classes.titlebarRow}>
+				<Titlebar />
+			</div>
+			<div className={classes.body}>
+				<div className={classes.sidebar}>
 					<Navbar links={links(permission)} />
-				</Grid>
-				<Grid item xs={9} className={classes.wrapper}>
-					<div className={classes.content}>
-						<Switch>
-							<Route exact path="/" component={Dashboard} />
-							<Route exact path="/players" component={Players} />
-							<Route exact path="/disconnected-players" component={DisconnectedPlayers} />
-							<Route exact path="/current-vehicle" component={CurrentVehicle} />
-							<Route exact path="/player/:id" component={PlayerView} />
-							<Route exact path="/vehicles" component={Vehicles} />
-							<Route exact path="/players-characters" component={Characters} />
-							<Route exact path="/vehicle/:id" component={VehicleView} />
-							<Route exact path="/doorlocks" component={Doorlocks} />
-							<Route exact path="/doorlock/:id" component={DoorlockView} />
-							<Route component={Error} />
-						</Switch>
-					</div>
-				</Grid>
-			</Grid>
+				</div>
+				<div className={classes.content}>
+					<Switch>
+						<Route exact path="/" component={Dashboard} />
+						<Route exact path="/players" component={Players} />
+						<Route exact path="/disconnected-players" component={DisconnectedPlayers} />
+						<Route exact path="/current-vehicle" component={CurrentVehicle} />
+						<Route exact path="/player/:id" component={PlayerView} />
+						<Route exact path="/vehicles" component={Vehicles} />
+						<Route exact path="/players-characters" component={Characters} />
+						<Route exact path="/vehicle/:id" component={VehicleView} />
+						<Route exact path="/doorlocks" component={Doorlocks} />
+						<Route exact path="/doorlock/:id" component={DoorlockView} />
+						<Route exact path="/items" component={Items} />
+						<Route exact path="/commands" component={Commands} />
+						<Route component={Error} />
+					</Switch>
+				</div>
+			</div>
 		</div>
 	);
 };

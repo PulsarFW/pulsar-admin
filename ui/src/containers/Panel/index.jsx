@@ -12,8 +12,10 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		height: '100%',
 		width: '100%',
-		border: `10px solid #000`,
+		border: `1px solid ${theme.palette.border.divider}`,
 		transition: 'opacity 500ms',
+		borderRadius: 6,
+		overflow: 'hidden',
 	},
 	inner: {
 		position: 'relative',
@@ -53,7 +55,7 @@ export default withRouter(() => {
 	return (
 		<Slide direction="up" in={!hidden}>
 			<Paper
-				elevation={20}
+				elevation={0}
 				className={classes.wrapper}
 				style={{ opacity: opacityMode ? '60%' : null }}>
 				<div className={classes.inner}>
