@@ -12,9 +12,6 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Install zip
-        run: sudo apt install zip
-
       - name: Get latest code
         uses: actions/checkout@v4
 
@@ -32,13 +29,7 @@ jobs:
         working-directory: ui
 
       - name: Bundle files
-        run: |
-          mkdir -p ./temp/pulsar-admin
-          cp ./{README.md,fxmanifest.lua} ./temp/pulsar-admin
-          cp -r ./{client,server,stream} ./temp/pulsar-admin
-          cp -r ./ui ./temp/pulsar-admin/ui
-          rm -rf ./temp/pulsar-admin/ui/node_modules
-          cd ./temp && zip -r ../pulsar-admin.zip ./pulsar-admin
+        run: zip -r pulsar-admin.zip . -x '*/.github/*' -x '*/node_modules/*'
 
       - name: Create release
         uses: softprops/action-gh-release@v2
