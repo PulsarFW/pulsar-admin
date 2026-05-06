@@ -3,7 +3,7 @@ name: Create release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 permissions:
   contents: write
@@ -18,7 +18,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
+
+      - name: Bump manifest version
+        run: npm run .github/actions/bump-manifest-version.js
+        env:
+          TGT_RELEASE_VERSION: ${{ github.ref_name }}
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
